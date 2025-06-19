@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: worker-dev
+  annotations:
+    codefresh.io/product: worker
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/muruchetty/codefresh-configs.git
+    targetRevision: HEAD
+    path: environments/development/worker
+  destination:
+    namespace: development
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Validate=false
+      - CreateNamespace=true

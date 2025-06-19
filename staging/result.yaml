@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: result-stg
+  annotations:
+    codefresh.io/product: result
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/muruchetty/codefresh-configs.git
+    targetRevision: HEAD
+    path: environments/staging/result
+  destination:
+    namespace: staging
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Validate=false
+      - CreateNamespace=true
