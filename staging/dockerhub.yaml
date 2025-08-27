@@ -1,0 +1,18 @@
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: dockerhub
+  namespace: staging
+spec:
+  type: kv-v2
+  mount: kv
+  path: argocd/docker
+  destination:
+    name: dockerhub
+    create: true
+    type: "kubernetes.io/dockerconfigjson"
+    transformation:
+      templates:
+        .dockerconfigjson:
+          text: |
+            {{` {{- printf "%s" (get .Secrets "key") -}}`}}
